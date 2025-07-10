@@ -23,7 +23,7 @@ function setup() {
     currentWinner = obtenerGanador();
     guardarVotos();
 
-     // Imprimir en consola
+     //imprimir en consola
   console.log("Votos actualizados:");
   console.log("KAI:", voteCounts.kaiVote + "  UMBU:", voteCounts.umbuVote + "  LIZ:", voteCounts.lizVote);
   };
