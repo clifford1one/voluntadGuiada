@@ -89,12 +89,12 @@ function declararVariables(){
   halfX = width / 2;
   halfY = height / 2;
 
- indexCarruselConocer=1;
+ //indexCarruselConocer=1;
 
-  mostrarInterfaz = false;
-  isPlaying = false;
-  videoEnded = false;
-  interfazInicializada = false;
+  //mostrarInterfaz = false;
+  //isPlaying = false;
+  //videoEnded = false;
+  //interfazInicializada = false;
 
-  ultimoMovimiento = millis();
+  //ultimoMovimiento = millis();
 }

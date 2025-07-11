@@ -203,14 +203,14 @@ function reiniciarExperiencia() {
   }
 
  
-  //popUpActive = false;
-  //nameModeActive = false;
-  //modoCarruselActive = false;
-  //greenPressed = false;
+  popUpActive = false;
+  nameModeActive = false;
+  modoCarruselActive = false;
+  greenPressed = false;
 
-  //textHere = "";
-  //letraIndex = 0;
-  //indexCarruselConocer = 0;
+  textHere = "";
+  letraIndex = 0;
+  indexCarruselConocer = 0;
 
 
 }
