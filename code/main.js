@@ -4,7 +4,7 @@ let videoEnded = false;
 let interfazInicializada = false;
 
 let tiempoInactivo = 0;
-let maxInactividad = 30000; // Tiempo máximo sin interacción (ms)
+let maxInactividad = 33000; // Tiempo máximo sin interacción (ms)
 let ultimoMovimiento = 0;
 
 // Recibe votos desde otros tabs usando BroadcastChannel

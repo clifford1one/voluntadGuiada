@@ -52,18 +52,18 @@ function nameMode() {
   noStroke();
   textAlign(LEFT);
   textFont(fontBold);
-  text(textHere, halfX - 240, halfY - 206);
+  text(textHere, halfX - 240, height/4.5-2);
 
   // Cursor parpadeante
   if (frameCount % 60 < 30) {
     stroke(0);
     strokeWeight(4);
     line(
+      textWidth(textHere) + halfX - 225, height/4.5+20,
       textWidth(textHere) + halfX - 225,
-      halfY - 220,
-      textWidth(textHere) + halfX - 225,
-      halfY - 180
+      height/4.5 - 20
     );
+  //rect(halfX, height / 4.5, 540, 70, 4);
   }
 }
 
