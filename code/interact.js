@@ -14,22 +14,22 @@ function nameMode() {
   fill(246, 237, 226);
   rect(halfX, height / 4.5, 540, 70, 4);
 
-  flechas(); //flechas para cambiar letra
-  yesNoButtons(); //botones de confirmación
+  flechas();           // Flechas para cambiar letra
+  yesNoButtons();      // Botones de confirmación
 
-  //bucle de letras
+  // Hace wrap del índice de letras si se sale del rango
   if (letraIndex < 0) {
     letraIndex = abecedario.length - 1;
   } else if (letraIndex >= abecedario.length) {
     letraIndex = 0;
   }
 
-  //resetea si el texto se sale del textBox
+  // Resetea si el texto es demasiado largo
   if (textHere.length > 15) {
     reseteo();
   }
 
-  //letra central (seleccionada)
+  // Letra central (seleccionada)
   fill(79);
   stroke(79);
   textSize(140);
@@ -38,7 +38,7 @@ function nameMode() {
   strokeWeight(6);
   text(abecedario[letraIndex], halfX, halfY - 10);
 
-  // letra anterior y siguiente
+  // Letra anterior y siguiente (para efecto de carrusel)
   strokeWeight(2);
   textSize(95);
   let previousLetra = (letraIndex - 1 + abecedario.length) % abecedario.length;
@@ -46,7 +46,7 @@ function nameMode() {
   let nextLetra = (letraIndex + 1) % abecedario.length;
   text(abecedario[nextLetra], halfX + 150, halfY);
 
-  //texto ingresado por el usuario (nombre acumulado)
+  // Texto ingresado por el usuario (nombre acumulado)
   fill(79);
   textSize(45);
   noStroke();
@@ -54,7 +54,7 @@ function nameMode() {
   textFont(fontBold);
   text(textHere, halfX - 240, halfY - 206);
 
-  //cursor parpadeante
+  // Cursor parpadeante
   if (frameCount % 60 < 30) {
     stroke(0);
     strokeWeight(4);
@@ -69,17 +69,17 @@ function nameMode() {
 
 function popUp() {
   background(79);
-  //fondo semitransparente
+  // Fondo semitransparente
   fill(0, 110);
   rect(halfX, halfY, 1280, 720);
 
-  //ventana principal del pop-up
+  // Ventana principal del pop-up
   fill(179);
   stroke(20);
   strokeWeight(8);
   rect(halfX, halfY + 20, 800, 510, 50);
 
-  //mensaje de confirmación
+  // Mensaje de confirmación con nombre
   textAlign(CENTER);
   strokeWeight(1);
   fill(20);
@@ -91,11 +91,11 @@ apoyo a ` + textHere + " ?",
     halfY - 1
   );
 
-  yesNoButtons(); // botones de ticket y equis
+  yesNoButtons(); // Botones de aceptar o cancelar
 }
 
 function yesNoButtons() {
-  // botón rojo (equis)
+  // Botón rojo (equis)
   noStroke();
   fill(100, 20, 20); // sombra
   rect(halfX - 65 + 6, halfY + 200 + 6, 100, 100, 20);
@@ -108,13 +108,13 @@ function yesNoButtons() {
   line(halfX - 40, halfY + 175, halfX - 90, halfY + 225);
   noStroke();
 
-  //botón verde (check)
+  // Botón verde (check)
   fill(20, 120, 20); // sombra
   rect(halfX + 65 + 6, halfY + 200 + 6, 100, 100, 20);
   fill(30, 225, 30); // color principal
   rect(halfX + 65, halfY + 200, 100, 100, 20);
 
-  //check blanco
+  // Check blanco
   stroke(255);
   noFill();
   strokeWeight(20);
@@ -126,7 +126,7 @@ function yesNoButtons() {
 }
 
 function flechas() {
-  //sombra de flechas (izquierda y derecha)
+  // Sombra de flechas (izquierda y derecha)
   push();
   strokeJoin(ROUND);
   stroke(160, 75, -10);
@@ -134,7 +134,7 @@ function flechas() {
   triangle(halfX + 429, halfY + 9, halfX + 339, halfY + 59, halfX + 339, halfY - 41);
   triangle(halfX - 411, halfY + 9, halfX - 321, halfY + 59, halfX - 321, halfY - 41);
 
-  //flechas en color principal
+  // Flechas en color principal
   stroke(240, 155, 70);
   triangle(halfX + 420, halfY, halfX + 330, halfY + 50, halfX + 330, halfY - 50);
   triangle(halfX - 420, halfY, halfX - 330, halfY + 50, halfX - 330, halfY - 50);
@@ -142,7 +142,6 @@ function flechas() {
 }
 
 function nuevoComputo() {
-  //suma un voto al personaje correspondiente
   if (greenPressed) {
     if (textHere === 'KAI') {
       votes.kaiVote++;
@@ -154,17 +153,18 @@ function nuevoComputo() {
       votes.lizVote++;
       lizVote = true;
     } else {
-      reseteo(); // Si no es válido, se reinicia
+      reseteo();
       return;
     }
 
-    //se sincronizan y guardan los votos
     channel.postMessage(votes);
     guardarVotos();
     console.log("Votos actualizados:", votes);
-    reseteo();
+
+    reiniciarExperiencia(); // 👈 Esto te lleva de vuelta al standby
   }
 }
+
 
 const peopleCarrusel = ["elKai", "elUmbu", "elLiz"];
 
@@ -178,9 +178,10 @@ function modoConocer(quien) {
     fill(170);
   rect(halfX, halfY, 1180, 590, 180);
 
-  flechas(); //mostrar flechas para cambiar personaje
+  flechas(); // Mostrar flechas para cambiar personaje
 
- //boton continuar
+
+ // boton continuar
  fill(20, 120, 20);
  rect(halfX+365+7, halfY - 227+7, 265, 70, 7); 
 
@@ -196,17 +197,17 @@ function modoConocer(quien) {
  let flechaX = halfX + 458; // posición X de la flecha (ajusta si es necesario)
  let flechaY = halfY - 226; // posición Y centrada con el texto
  beginShape();
- vertex(flechaX, flechaY - 18);  
- vertex(flechaX + 32, flechaY);   
- vertex(flechaX, flechaY + 18);   
- vertex(flechaX + 10, flechaY);   
+ vertex(flechaX, flechaY - 18);   // punta superior
+ vertex(flechaX + 32, flechaY);   // punta derecha
+ vertex(flechaX, flechaY + 18);   // punta inferior
+ vertex(flechaX + 10, flechaY);   // base de la flecha (centro)
  endShape(CLOSE);
  pop();
 
  fill(20);
  noStroke();
 
- //pantalla de cada personaje
+ // Información personalizada según el personaje
  if (quien === 'elKai') {
     textFont(fontBold);
     textAlign(LEFT);

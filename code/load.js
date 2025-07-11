@@ -10,7 +10,7 @@ let textoConfirmacion;
 let previusLetra;
 let nextLetra;
 
-let greenPressed = false;;
+let greenPressed;
 let redPressed;
 
 let confirmVote = `¿quieres darle tu, 
@@ -89,12 +89,7 @@ function declararVariables(){
   halfX = width / 2;
   halfY = height / 2;
 
- //indexCarruselConocer=1;
+indexCarruselConocer=1;
 
-  //mostrarInterfaz = false;
-  //isPlaying = false;
-  //videoEnded = false;
-  //interfazInicializada = false;
 
-  //ultimoMovimiento = millis();
 }

@@ -4,16 +4,16 @@ let videoEnded = false;
 let interfazInicializada = false;
 
 let tiempoInactivo = 0;
-let maxInactividad = 30000; // tiempo máximo sin interacción (ms)
+let maxInactividad = 30000; // Tiempo máximo sin interacción (ms)
 let ultimoMovimiento = 0;
 
-//recibe votos desde 
+// Recibe votos desde otros tabs usando BroadcastChannel
 channel.onmessage = function(event) {
   votes = event.data;
   console.log("Votos actualizados desde otro tab:", votes);
 };
 
-//carga votos previamente guardados desde localStorage
+// Carga votos previamente guardados desde localStorage
 function cargarVotosGuardados() {
   const votosGuardados = localStorage.getItem('votosGuardados');
   if (votosGuardados) {
@@ -22,7 +22,7 @@ function cargarVotosGuardados() {
   }
 }
 
-//guarda los votos en localStorage y los comunica al resto de pestañas
+// Guarda los votos en localStorage y los comunica al resto de pestañas
 function guardarVotos() {
   localStorage.setItem('votosGuardados', JSON.stringify(votes));
   channel.postMessage(votes);
@@ -35,9 +35,9 @@ function setup() {
   
   declararVariables();
 
-  ultimoMovimiento = millis(); //marca el momento inicial de actividad
+  ultimoMovimiento = millis(); // Marca el momento inicial de actividad
 
-  //al terminar el video de introducción, se oculta y marca como finalizado
+  // Al terminar el video de introducción, se oculta y marca como finalizado
   videoIntro.onended(() => {
     videoEnded = true;
     videoIntro.hide();
@@ -47,13 +47,13 @@ function setup() {
 }
 
 function draw() {
-  //si pasa el tiempo máximo sin actividad, se reinicia todo
+  // Si pasa el tiempo máximo sin actividad, se reinicia todo
   if (millis() - ultimoMovimiento > maxInactividad) {
     reiniciarExperiencia();
     return;
   }
 
-  //mientras no termina el video, se muestra o la pantalla de espera
+  // Mientras no termina el video, se muestra o la pantalla de espera
   if (!videoEnded) {
     if (isPlaying && !videoIntro.elt.paused) {
       image(videoIntro, 0, 0, width, height);
@@ -69,7 +69,7 @@ function draw() {
     interfazInicializada = true;
   }
 
-  //dinámica de intercambio de interfaces
+  // Interfaz principal: cambia según el modo activo
   background(200);
   if (modoCarruselActive) {
     modoConocer(peopleCarrusel[indexCarruselConocer]);
@@ -83,6 +83,7 @@ function draw() {
 // Muestra mensaje inicial cuando aún no se ha presionado nada
 function dibujarPantallaEspera() {
   background(0);
+  noStroke();
   fill(255);
   textSize(32);
   textAlign(CENTER, CENTER);
@@ -90,9 +91,9 @@ function dibujarPantallaEspera() {
 }
 
 function mousePressed() {
-  ultimoMovimiento = millis(); //registra actividad
+  ultimoMovimiento = millis(); // Registra actividad
 
-  // si el video aún no termina, lo inicia al primer click
+  // Si el video aún no termina, lo inicia al primer click
   if (!videoEnded) {
     if (!isPlaying) {
       isPlaying = true;
@@ -115,9 +116,9 @@ function mousePressed() {
     flechaDer = true;
   }
 
-  manejarFlechas(); //funcion que maneja 
+  manejarFlechas(); // Aplica la navegación si corresponde
 
-  //interacción pop-up de confirmación
+  // Lógica para interacción con pop-up de confirmación
   if (popUpActive) {
     if (mouseX > halfX + 15 && mouseX < halfX + 115 && mouseY > halfY + 150 && mouseY < halfY + 250) {
       greenPressed = true;
@@ -126,7 +127,7 @@ function mousePressed() {
       reseteo();
     }
   } 
-  //modo de ingreso de nombre
+  // Lógica del modo de ingreso de nombre
   else if (nameModeActive) {
     if (flechaIzq) {
       letraIndex -= 1;
@@ -134,23 +135,23 @@ function mousePressed() {
       letraIndex += 1;
     }
 
-    //confirmar letra
+    // Botón de confirmar letra
     if ((mouseX > halfX + 15 && mouseX < halfX + 115 && mouseY > halfY + 150 && mouseY < halfY + 250)|| (mouseX > halfX - 40 && mouseX < halfX + 40 && mouseY > halfY - 42 && mouseY < halfY + 42)) {
       textHere += abecedario[letraIndex];
 
-      // Si el nombre coincide , se activa el pop-up
+      // Si el nombre coincide con alguno predefinido, se activa el pop-up
       if (["KAI", "HUMBU", "LIZPI", "LIZDI"].includes(textHere)) {
         popUpActive = true;
         nameModeActive = false;
       }
     } 
-    // botón pa reiniciar nombre
+    // Botón para reiniciar nombre
     else if (mouseX > halfX - 115 && mouseX < halfX - 15 && mouseY > halfY + 150 && mouseY < halfY + 250) {
       textHere = "";
     }
   }
 
-  //volver al modo de nombre
+  // Salida del modo carrusel (volver al modo de nombre)
   if (modoCarruselActive &&  (mouseX > halfX + 215 && mouseX < halfX + 510 && mouseY > halfY - 270 && mouseY < halfY - 180)) {
     modoCarruselActive = false;
     nameModeActive = true;
@@ -158,7 +159,7 @@ function mousePressed() {
   }
 }
 
-//función que controla las acciones de las flechas
+// Controla el cambio de letra o personaje, según el modo activo
 function manejarFlechas() {
   if (!flechaIzq && !flechaDer) return;
 
@@ -186,14 +187,14 @@ function manejarFlechas() {
   flechaDer = false;
 }
 
-//función que reseta el modoNombre para que la textBox se vacíe
+// Reinicia variables del modo nombre y oculta pop-up
 function reseteo() {
   popUpActive = false;
   nameModeActive = true;
   textHere = "";
 }
 
-//reinicia todo si se detecta inactividad (por 30s)
+// Reinicia todo el flujo si no hay interacción por mucho tiempo
 function reiniciarExperiencia() {
   console.log("Reiniciando por inactividad...");
 
@@ -202,7 +203,7 @@ function reiniciarExperiencia() {
     videoIntro.hide();
   }
 
- 
+  // Estado inicial de todas las flags y variables
   popUpActive = false;
   nameModeActive = false;
   modoCarruselActive = false;
@@ -212,10 +213,15 @@ function reiniciarExperiencia() {
   letraIndex = 0;
   indexCarruselConocer = 0;
 
+  mostrarInterfaz = false;
+  isPlaying = false;
+  videoEnded = false;
+  interfazInicializada = false;
 
+  ultimoMovimiento = millis();
 }
 
-//detecta actividad e inactividad
+// Detecta movimiento del mouse para reiniciar el contador de inactividad
 function mouseMoved() {
   ultimoMovimiento = millis();
 }
